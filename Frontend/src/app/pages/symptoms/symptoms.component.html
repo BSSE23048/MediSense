@@ -1,0 +1,274 @@
+<div class="symptoms-page">
+  <!-- Text Slider -->
+  <app-text-slider [text]="'AI Symptom Checker'"></app-text-slider>
+  
+  <div class="container">
+    <div class="page-header">
+      <p>Describe your symptoms and get evidence-based analysis with risk assessment</p>
+    </div>
+
+    <!-- Input Section -->
+    <div class="input-section" *ngIf="!isAnalyzing && !analysis">
+      <div class="symptom-input-card">
+        <div class="input-header">
+          <i class="ph ph-stethoscope"></i>
+          <h3>Describe Your Symptoms</h3>
+        </div>
+        
+        <form (ngSubmit)="analyzeSymptoms()">
+          <div class="form-group">
+            <label for="symptoms" class="form-label">
+              What symptoms are you experiencing?
+            </label>
+            <div class="voice-controls">
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                (click)="startVoiceInput('symptoms')"
+                [disabled]="isVoiceRecording || isVoiceTranscribing || isAnalyzing"
+              >
+                <i class="ph ph-microphone"></i>
+                Start Voice
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                (click)="stopVoiceInput('symptoms')"
+                [disabled]="!isVoiceRecording"
+              >
+                <i class="ph ph-stop-circle"></i>
+                Stop & Transcribe
+              </button>
+            </div>
+            <textarea
+              id="symptoms"
+              class="form-textarea"
+              [(ngModel)]="symptoms"
+              name="symptoms"
+              placeholder="Example: fever, persistent cough, body aches for 3 days..."
+              rows="6"
+              required
+            ></textarea>
+            <div class="input-hint">
+              <i class="ph ph-info"></i>
+              <span>Be as specific as possible. Include duration, severity, and any relevant details.</span>
+            </div>
+            <div class="input-hint" *ngIf="isVoiceRecording || isVoiceTranscribing">
+              <i class="ph ph-waveform"></i>
+              <span>{{ isVoiceRecording ? 'Listening...' : 'Transcribing your voice...' }}</span>
+            </div>
+            <div class="error-message" *ngIf="voiceError">
+              <i class="ph ph-warning-circle"></i>
+              {{ voiceError }}
+            </div>
+          </div>
+
+          <div class="disclaimer">
+            <i class="ph ph-warning"></i>
+            <p>
+              <strong>Disclaimer:</strong> This tool provides informational guidance only and is not a substitute 
+              for professional medical advice. Always consult a healthcare provider for proper diagnosis and treatment.
+            </p>
+          </div>
+
+          <button type="submit" class="btn btn-primary" [disabled]="!symptoms.trim()">
+            <i class="ph ph-brain"></i>
+            Analyze Symptoms
+          </button>
+        </form>
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        <i class="ph ph-warning-circle"></i>
+        {{ error }}
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-section" *ngIf="isAnalyzing">
+      <app-loader></app-loader>
+      <p class="processing-text">Analyzing your symptoms...</p>
+      <div class="processing-steps">
+        <div class="step">
+          <i class="ph ph-magnifying-glass"></i>
+          <span>Searching medical knowledge base</span>
+        </div>
+        <div class="step">
+          <i class="ph ph-brain"></i>
+          <span>Analyzing with AI</span>
+        </div>
+        <div class="step">
+          <i class="ph ph-check-circle"></i>
+          <span>Generating recommendations</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-section" *ngIf="analysis && !isAnalyzing">
+      <div class="results-header">
+        <div class="header-content">
+          <h2>Analysis Results</h2>
+          <div class="urgency-badge" [ngClass]="getUrgencyClass(analysis.urgency)">
+            <i class="ph ph-warning-circle"></i>
+            {{ analysis.urgency | titlecase }} Urgency
+          </div>
+        </div>
+        <button class="btn btn-outline" (click)="reset()">
+          <i class="ph ph-arrow-counter-clockwise"></i>
+          Check Again
+        </button>
+      </div>
+
+      <!-- Explanation -->
+      <div class="explanation-card">
+        <div class="card-header">
+          <i class="ph ph-info"></i>
+          <h3>Analysis</h3>
+        </div>
+        <p class="explanation-text">{{ analysis.explanation }}</p>
+      </div>
+
+      <!-- Possible Conditions -->
+      <div class="conditions-section">
+        <h3 class="section-title">
+          <i class="ph ph-clipboard-text"></i>
+          Possible Conditions
+        </h3>
+        <div class="conditions-grid">
+          <div class="condition-card" *ngFor="let condition of analysis.possible_conditions">
+            <div class="condition-header">
+              <h4>{{ condition.name }}</h4>
+              <span class="probability-badge" [ngClass]="getProbabilityClass(condition.probability)">
+                {{ condition.probability | titlecase }}
+              </span>
+            </div>
+            <p class="condition-description">{{ condition.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="recommendations-card">
+        <div class="card-header">
+          <i class="ph ph-list-checks"></i>
+          <h3>Recommendations</h3>
+        </div>
+        <ul class="recommendations-list">
+          <li *ngFor="let rec of analysis.recommendations">
+            <i class="ph ph-check-circle"></i>
+            {{ rec }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Seek Immediate Care -->
+      <div class="warning-card" *ngIf="analysis.seek_immediate_care_if && analysis.seek_immediate_care_if.length > 0">
+        <div class="card-header">
+          <i class="ph ph-warning"></i>
+          <h3>Seek Immediate Care If:</h3>
+        </div>
+        <ul class="warning-list">
+          <li *ngFor="let warning of analysis.seek_immediate_care_if">
+            <i class="ph ph-warning-circle"></i>
+            {{ warning }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Citations -->
+      <div class="citations-card" *ngIf="analysis.citations && analysis.citations.length > 0">
+        <div class="card-header">
+          <i class="ph ph-books"></i>
+          <h3>Medical Sources</h3>
+        </div>
+        <ul class="citations-list">
+          <li *ngFor="let citation of analysis.citations">
+            <i class="ph ph-book-open"></i>
+            {{ citation }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="citations-card" *ngIf="analysis.context_sources && analysis.context_sources.length > 0">
+        <div class="card-header">
+          <i class="ph ph-database"></i>
+          <h3>Context Sources Used</h3>
+        </div>
+        <ul class="citations-list">
+          <li *ngFor="let source of analysis.context_sources">
+            <i class="ph ph-check-circle"></i>
+            {{ source }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="citations-card">
+        <div class="card-header">
+          <i class="ph ph-chat-circle-text"></i>
+          <h3>Follow-up Questions</h3>
+        </div>
+        <p *ngIf="!chatThreadId">Log in first to use multi-turn follow-up chat linked to your reports.</p>
+        <div *ngIf="chatThreadId" class="chat-thread">
+          <div class="condition-card" *ngFor="let msg of chatMessages">
+            <h4>{{ msg.role === 'user' ? 'You' : 'Assistant' }}</h4>
+            <p>{{ msg.message }}</p>
+            <small *ngIf="msg.sources && msg.sources.length">Sources: {{ msg.sources.join(', ') }}</small>
+            <button
+              *ngIf="msg.role === 'assistant'"
+              class="btn btn-outline btn-sm"
+              (click)="speakAssistantMessage(msg.message)"
+              [disabled]="isVoiceSpeaking"
+            >
+              <i class="ph ph-speaker-high"></i>
+              Speak
+            </button>
+          </div>
+          <div class="form-group">
+            <div class="voice-controls">
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                (click)="startVoiceInput('followup')"
+                [disabled]="isVoiceRecording || isVoiceTranscribing"
+              >
+                <i class="ph ph-microphone"></i>
+                Dictate Question
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                (click)="stopVoiceInput('followup')"
+                [disabled]="!isVoiceRecording"
+              >
+                <i class="ph ph-stop-circle"></i>
+                Stop & Transcribe
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                (click)="stopSpeaking()"
+                [disabled]="!isVoiceSpeaking"
+              >
+                <i class="ph ph-speaker-slash"></i>
+                Stop Audio
+              </button>
+            </div>
+            <textarea
+              class="form-textarea"
+              [(ngModel)]="followupQuestion"
+              name="followupQuestion"
+              rows="3"
+              placeholder="Ask a follow-up about your report or symptom analysis..."
+            ></textarea>
+            <small *ngIf="isVoiceTranscribing">Transcribing...</small>
+          </div>
+          <button class="btn btn-primary" (click)="askFollowup()" [disabled]="!followupQuestion.trim()">
+            <i class="ph ph-paper-plane-tilt"></i>
+            Ask Follow-up
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

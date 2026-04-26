@@ -1,0 +1,260 @@
+.about-page {
+  min-height: 100vh;
+  padding: 120px 0 80px;
+}
+
+/* Hero */
+.about-hero {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 80px;
+}
+
+.about-hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin-bottom: 24px;
+}
+
+.lead {
+  font-size: 1.25rem;
+  color: var(--secondary-text);
+  line-height: 1.7;
+}
+
+/* Mission */
+.mission-section {
+  margin-bottom: 80px;
+}
+
+.mission-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.mission-card h2 {
+  font-size: 2rem;
+  margin-bottom: 24px;
+}
+
+.mission-card p {
+  font-size: 1.1rem;
+  color: var(--secondary-text);
+  line-height: 1.8;
+}
+
+/* Sections */
+section {
+  margin-bottom: 80px;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 48px;
+}
+
+/* Features */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.feature-card:hover {
+  background: var(--card-hover);
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-light);
+  border: 1px solid var(--accent-color);
+  border-radius: var(--radius);
+  font-size: 2rem;
+  color: var(--accent-color);
+}
+
+.feature-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.feature-card p {
+  color: var(--secondary-text);
+  line-height: 1.6;
+}
+
+/* Tech Stack */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.tech-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 32px;
+  transition: var(--transition);
+}
+
+.tech-card:hover {
+  background: var(--card-hover);
+}
+
+.tech-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tech-card ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tech-card li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--secondary-text);
+}
+
+.tech-card li i {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+}
+
+/* How It Works */
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+  color: var(--danger);
+  font-size: 2rem;
+}
+
+.how-card {
+  text-align: center;
+  padding: 32px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+
+.how-card:hover {
+  background: var(--card-hover);
+  transform: translateY(-4px);
+}
+
+.step-number {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-color);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+.how-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.how-card p {
+  color: var(--secondary-text);
+  line-height: 1.6;
+}
+
+/* Disclaimer */
+.disclaimer-section {
+  margin-top: 100px;
+}
+
+.disclaimer-card {
+  display: flex;
+  gap: 24px;
+  padding: 40px;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid var(--warning);
+  border-radius: var(--radius-lg);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.disclaimer-card > i {
+  font-size: 3rem;
+  color: var(--warning);
+  flex-shrink: 0;
+}
+
+.disclaimer-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.disclaimer-content p {
+  color: var(--secondary-text);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.disclaimer-content strong {
+  color: var(--primary-text);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-page {
+    padding: 100px 0 60px;
+  }
+  
+  .mission-card {
+    padding: 32px 24px;
+  }
+  
+  .features-grid,
+  .tech-grid,
+  .how-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .disclaimer-card {
+    flex-direction: column;
+    padding: 32px 24px;
+  }
+  
+  .disclaimer-card > i {
+    font-size: 2.5rem;
+  }
+}

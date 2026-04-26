@@ -1,0 +1,29 @@
+<div class="auth-page">
+  <div class="container">
+    <div class="auth-card">
+      <h2>{{ mode === 'login' ? 'Login' : 'Create Account' }}</h2>
+      <p>Use your account to save reports and ask follow-up questions with memory.</p>
+
+      <form (ngSubmit)="submit()">
+        <div class="form-group">
+          <label>Email</label>
+          <input class="form-input" type="email" [(ngModel)]="email" name="email" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input class="form-input" type="password" [(ngModel)]="password" name="password" required />
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="loading">
+          {{ loading ? 'Please wait...' : (mode === 'login' ? 'Login' : 'Register') }}
+        </button>
+      </form>
+
+      <p class="switch-text">
+        <a href="#" (click)="mode = mode === 'login' ? 'register' : 'login'; $event.preventDefault()">
+          {{ mode === 'login' ? 'Need an account? Register' : 'Already have an account? Login' }}
+        </a>
+      </p>
+      <p class="error-message" *ngIf="error">{{ error }}</p>
+    </div>
+  </div>
+</div>

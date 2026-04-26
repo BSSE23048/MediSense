@@ -1,0 +1,17 @@
+.auth-page {
+  min-height: 100vh;
+  padding: 120px 0 60px;
+}
+
+.auth-card {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.switch-text {
+  margin-top: 12px;
+}

@@ -1,0 +1,220 @@
+<div class="report-page">
+  <!-- Text Slider -->
+  <app-text-slider [text]="'Medical Report Analysis'"></app-text-slider>
+  
+  <div class="container">
+    <div class="page-header">
+      <p>Upload your medical report for AI-powered summarization and insights</p>
+    </div>
+
+    <!-- Upload Area -->
+    <div class="upload-section" *ngIf="!isProcessing && !summary">
+      <div 
+        class="file-upload-zone"
+        [class.dragging]="isDragging"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+        
+        <input 
+          type="file" 
+          id="fileInput"
+          accept=".pdf,.png,.jpg,.jpeg"
+          (change)="onFileSelected($event)"
+          hidden>
+        
+        <div class="upload-content">
+          <i class="ph ph-upload-simple"></i>
+          <h3>Upload Medical Report</h3>
+          <p>Drag & drop your file here or click to browse</p>
+          <label for="fileInput" class="btn btn-primary">
+            <i class="ph ph-file"></i>
+            Choose File
+          </label>
+          <div class="file-info">
+            <span>Supported formats: PDF, PNG, JPG, JPEG</span>
+            <span>Maximum size: 16MB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected File Info -->
+      <div class="selected-file-info" *ngIf="selectedFile && !isProcessing">
+        <div class="file-details">
+          <i class="ph ph-file-text"></i>
+          <div class="file-meta">
+            <span class="file-name">{{ selectedFile.name }}</span>
+            <span class="file-size">{{ getFileSize(selectedFile.size) }} • {{ getFileType(selectedFile) }}</span>
+          </div>
+          <button class="btn btn-sm btn-outline" (click)="reset()">
+            <i class="ph ph-x"></i>
+            Remove
+          </button>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        <i class="ph ph-warning-circle"></i>
+        {{ error }}
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-section" *ngIf="isProcessing">
+      <app-loader></app-loader>
+      <p class="processing-text">Analyzing your medical report...</p>
+      <div class="processing-steps">
+        <div class="step" [class.active]="currentStep === 'ocr'" [class.completed]="currentStep === 'summarizing' || currentStep === 'complete'">
+          <i class="ph ph-scan"></i>
+          <span>Extracting text with OCR</span>
+          <span class="step-status" *ngIf="currentStep === 'ocr'">In progress...</span>
+          <span class="step-status success" *ngIf="ocrConfidence > 0">
+            ✓ {{ (ocrConfidence * 100).toFixed(0) }}% confidence
+          </span>
+        </div>
+        <div class="step" [class.active]="currentStep === 'summarizing'" [class.completed]="currentStep === 'complete'">
+          <i class="ph ph-brain"></i>
+          <span>Analyzing with AI</span>
+          <span class="step-status" *ngIf="currentStep === 'summarizing'">In progress...</span>
+        </div>
+        <div class="step" [class.active]="currentStep === 'complete'" [class.completed]="currentStep === 'complete'">
+          <i class="ph ph-check-circle"></i>
+          <span>Generating summary</span>
+          <span class="step-status success" *ngIf="currentStep === 'complete'">✓ Complete</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-section" *ngIf="summary && !isProcessing">
+      <div class="results-header">
+        <h2>Analysis Complete</h2>
+        <div class="voice-controls">
+          <div class="lang-toggle" role="group" aria-label="Voice language">
+            <button
+              type="button"
+              class="lang-btn"
+              [class.active]="speechLanguage === 'en'"
+              [disabled]="isVoiceSpeaking"
+              (click)="setSpeechLanguage('en')">
+              English
+            </button>
+            <button
+              type="button"
+              class="lang-btn"
+              [class.active]="speechLanguage === 'ur'"
+              [disabled]="isVoiceSpeaking"
+              (click)="setSpeechLanguage('ur')">
+              اردو
+            </button>
+          </div>
+          <button class="btn btn-outline btn-sm" (click)="speakSummary()" [disabled]="isVoiceSpeaking">
+            <i class="ph ph-speaker-high"></i>
+            {{ isVoiceSpeaking
+                ? (speechLanguage === 'ur' ? 'بول رہا ہے...' : 'Speaking...')
+                : (speechLanguage === 'ur' ? 'اردو میں سنیں' : 'Read Summary Aloud') }}
+          </button>
+          <button class="btn btn-outline btn-sm" (click)="stopSummaryAudio()" [disabled]="!isVoiceSpeaking">
+            <i class="ph ph-speaker-slash"></i>
+            Stop Audio
+          </button>
+          <button class="btn btn-outline" (click)="reset()">
+            <i class="ph ph-arrow-counter-clockwise"></i>
+            Analyze Another
+          </button>
+        </div>
+      </div>
+      <div class="error-message" *ngIf="voiceError">
+        <i class="ph ph-warning-circle"></i>
+        {{ voiceError }}
+      </div>
+      <div class="disclaimer" *ngIf="summary.saved_report_id">
+        <i class="ph ph-check-circle"></i>
+        Saved to your account for later recovery (Report ID: {{ summary.saved_report_id }})
+      </div>
+
+      <!-- Patient Summary -->
+      <div class="summary-card">
+        <div class="card-header">
+          <i class="ph ph-user"></i>
+          <h3>Patient Summary</h3>
+        </div>
+        <p class="summary-text">{{ summary.patient_summary }}</p>
+      </div>
+
+      <!-- Doctor Summary -->
+      <div class="summary-card">
+        <div class="card-header">
+          <i class="ph ph-stethoscope"></i>
+          <h3>Medical Summary</h3>
+        </div>
+        <p class="summary-text">{{ summary.doctor_summary }}</p>
+      </div>
+
+      <!-- Key Findings -->
+      <div class="info-grid">
+        <div class="info-card">
+          <h4>
+            <i class="ph ph-clipboard-text"></i>
+            Key Findings
+          </h4>
+          <ul class="info-list">
+            <li *ngFor="let finding of summary.key_findings">
+              <i class="ph ph-check"></i>
+              {{ finding }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Medications -->
+        <div class="info-card" *ngIf="summary.medications && summary.medications.length > 0">
+          <h4>
+            <i class="ph ph-pill"></i>
+            Medications
+          </h4>
+          <ul class="info-list">
+            <li *ngFor="let med of summary.medications">
+              <i class="ph ph-check"></i>
+              <button class="btn btn-sm btn-outline" (click)="loadMedicineDetails(med)">{{ med }}</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="summary-card" *ngIf="selectedMedicine">
+        <div class="card-header">
+          <i class="ph ph-pill"></i>
+          <h3>{{ selectedMedicine.name }} Details</h3>
+        </div>
+        <p><strong>Generic:</strong> {{ selectedMedicine.generic_name }}</p>
+        <p><strong>Source:</strong> {{ selectedMedicine.source }}</p>
+        <p><strong>Ingredients:</strong> {{ selectedMedicine.ingredients.join(', ') || 'N/A' }}</p>
+        <p><strong>Uses:</strong> {{ selectedMedicine.uses.join(', ') || 'N/A' }}</p>
+        <p><strong>Alternatives:</strong> {{ medicineAlternatives.join(', ') || 'No alternatives available' }}</p>
+      </div>
+
+      <!-- Critical Warnings -->
+      <div class="warning-card" *ngIf="summary.critical_warnings && summary.critical_warnings.length > 0">
+        <div class="card-header">
+          <i class="ph ph-warning"></i>
+          <h3>Important Warnings</h3>
+        </div>
+        <ul class="warning-list">
+          <li *ngFor="let warning of summary.critical_warnings">
+            <i class="ph ph-warning-circle"></i>
+            {{ warning }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Follow-up -->
+      <div class="followup-card" *ngIf="summary.follow_up">
+        <div class="card-header">
+          <i class="ph ph-calendar-check"></i>
+          <h3>Follow-up Recommendations</h3>
+        </div>
+        <p>{{ summary.follow_up }}</p>
+      </div>
+    </div>
+  </div>
+</div>

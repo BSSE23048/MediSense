@@ -1,0 +1,130 @@
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+  background: var(--primary-bg);
+  border-top: 1px solid rgba(25, 167, 206, 0.2);
+  font-family: var(--font-primary);
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.footer-top {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid rgba(25, 167, 206, 0.3);
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-title {
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-on-dark);
+  letter-spacing: 0.03em;
+}
+
+.footer-tagline {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.footer-sections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  padding: 0 var(--spacing-md);
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.02em;
+  margin: 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(25, 167, 206, 0.2);
+}
+
+.section-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-links a {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.92rem;
+  padding: 4px 0;
+  transition: var(--transition);
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-links a i {
+  font-size: 1rem;
+  transition: color 0.3s;
+  color: var(--accent-color);
+}
+
+.section-links a:hover {
+  color: var(--text-on-dark);
+  padding-left: 4px;
+}
+
+.footer-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid rgba(25, 167, 206, 0.2);
+}
+
+.footer-info {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.88rem;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .footer-sections {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    padding: 0;
+  }
+  
+  .footer-section {
+    gap: 10px;
+  }
+  
+  .section-links a {
+    font-size: 0.9rem;
+  }
+}

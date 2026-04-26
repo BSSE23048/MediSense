@@ -1,0 +1,31 @@
+<div class="report-page">
+  <div class="container">
+    <div class="results-header">
+      <h2>My Saved Reports</h2>
+    </div>
+
+    <p *ngIf="loading">Loading...</p>
+    <p class="error-message" *ngIf="error">{{ error }}</p>
+
+    <div class="conditions-grid">
+      <div class="condition-card" *ngFor="let report of reports">
+        <h4>{{ report.report_title }}</h4>
+        <p>{{ report.created_at }}</p>
+        <button class="btn btn-outline" (click)="openReport(report.id)">Open</button>
+      </div>
+    </div>
+
+    <div class="summary-card" *ngIf="selectedReport">
+      <div class="card-header">
+        <i class="ph ph-file-text"></i>
+        <h3>{{ selectedReport.report_title }}</h3>
+      </div>
+      <p><strong>Extracted Text:</strong></p>
+      <p>{{ selectedReport.extracted_text }}</p>
+      <p><strong>Patient Summary:</strong></p>
+      <p>{{ selectedReport.summary?.patient_summary }}</p>
+      <p><strong>Doctor Summary:</strong></p>
+      <p>{{ selectedReport.summary?.doctor_summary }}</p>
+    </div>
+  </div>
+</div>

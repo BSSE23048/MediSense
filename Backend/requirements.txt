@@ -1,0 +1,21 @@
+flask==3.0.0
+flask-cors==4.0.0
+gunicorn==21.2.0
+pytesseract==0.3.10
+pillow>=10.1.0
+PyPDF2==3.0.1
+langchain>=0.2.0
+langchain-google-genai>=1.0.6
+pydantic>=2.0.0
+# chromadb==0.4.18  # Optional - requires C++ build tools on Windows
+# See INSTALL_CHROMADB.md for installation instructions
+# RAG service will work in fallback mode without chromadb
+sentence-transformers==2.2.2
+google-generativeai>=0.5.2
+python-dotenv==1.0.0
+easyocr==1.7.0
+numpy>=1.26.0
+pandas>=2.0.3
+groq>=0.11.0
+gTTS>=2.5.0
+

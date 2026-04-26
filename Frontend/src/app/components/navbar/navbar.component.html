@@ -1,0 +1,52 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="navbar-content">
+    <a routerLink="/" class="logo" (click)="scrollToTop()">
+      <span class="logo-text">MediSense AI</span>
+    </a>
+    
+    <div class="nav-links">
+      <a routerLink="/" 
+         routerLinkActive="active" 
+         [routerLinkActiveOptions]="{exact: true}"
+         class="nav-link">
+        <i class="ph ph-house"></i>
+        <span class="nav-text">Home</span>
+      </a>
+      
+      <a routerLink="/report" 
+         routerLinkActive="active"
+         class="nav-link">
+        <i class="ph ph-file-text"></i>
+        <span class="nav-text">Report</span>
+      </a>
+      
+      <a routerLink="/symptoms" 
+         routerLinkActive="active"
+         class="nav-link">
+        <i class="ph ph-heartbeat"></i>
+        <span class="nav-text">Symptoms</span>
+      </a>
+
+      <a routerLink="/my-reports" 
+         routerLinkActive="active"
+         class="nav-link">
+        <i class="ph ph-archive-box"></i>
+        <span class="nav-text">My Reports</span>
+      </a>
+
+      <a routerLink="/auth" 
+         routerLinkActive="active"
+         class="nav-link">
+        <i class="ph ph-user-circle"></i>
+        <span class="nav-text">Login</span>
+      </a>
+      
+      <a routerLink="/about" 
+         routerLinkActive="active"
+         class="nav-link">
+        <i class="ph ph-info"></i>
+        <span class="nav-text">About</span>
+      </a>
+    </div>
+  </div>
+</nav>

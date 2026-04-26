@@ -1,0 +1,111 @@
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content fade-in-up">
+        <div class="hero-badge">
+          <i class="ph ph-sparkle"></i>
+          <span>Powered by Advanced AI</span>
+        </div>
+        
+        <h1 class="hero-title">
+          Medical Intelligence<br/>
+          <span class="gradient-text">Simplified</span>
+        </h1>
+        
+        <p class="hero-description">
+          Transform complex medical reports into clear insights. 
+          Get instant symptom analysis powered by verified medical knowledge.
+        </p>
+        
+        <div class="hero-actions">
+          <a routerLink="/report" class="btn btn-primary">
+            <i class="ph ph-upload"></i>
+            Analyze Report
+          </a>
+          <a routerLink="/symptoms" class="btn btn-outline">
+            <i class="ph ph-stethoscope"></i>
+            Check Symptoms
+          </a>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-item" *ngFor="let stat of stats">
+            <div class="stat-value">{{ stat.value }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Text Slider -->
+  <app-text-slider [text]="'Intelligent Healthcare Assistant'"></app-text-slider>
+  
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-subtitle">
+          Leveraging cutting-edge AI to bridge the gap between medical complexity and patient understanding
+        </p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let feature of features">
+          <div class="feature-icon">
+            <i [class]="'ph ph-' + feature.icon"></i>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Medical Statistics Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Medical Intelligence Insights</h2>
+        <p class="section-subtitle">
+          Evidence-based healthcare statistics and trends
+        </p>
+      </div>
+      
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Disease Prevalence (2024)</h3>
+          <canvas #diseaseChart></canvas>
+        </div>
+        
+        <div class="chart-card">
+          <h3>Healthcare Accessibility</h3>
+          <canvas #accessChart></canvas>
+        </div>
+        
+        <div class="chart-card">
+          <h3>AI Diagnosis Accuracy</h3>
+          <canvas #accuracyChart></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-card">
+        <h2>Ready to get started?</h2>
+        <p>Experience the future of medical information accessibility</p>
+        <div class="cta-buttons">
+          <a routerLink="/report" class="btn btn-primary">
+            Get Started
+            <i class="ph ph-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

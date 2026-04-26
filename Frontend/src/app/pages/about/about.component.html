@@ -1,0 +1,93 @@
+<div class="about-page">
+  <app-text-slider [text]="'About MediSense AI'"></app-text-slider>
+  <div class="container">
+    <!-- Hero -->
+    <div class="about-hero">
+      <p class="lead">
+        Empowering patients with AI-driven medical insights through intelligent report analysis 
+        and symptom checking. Bridging the gap between complex medical documentation and patient understanding.
+      </p>
+    </div>
+
+    <!-- Mission -->
+    <section class="mission-section">
+      <div class="mission-card">
+        <h2>Our Mission</h2>
+        <p>
+          MediSense AI was created to democratize access to medical information. We believe that 
+          everyone deserves to understand their health data without needing a medical degree. 
+          By leveraging cutting-edge artificial intelligence and verified medical databases, 
+          we transform complex medical reports into clear, actionable insights.
+        </p>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section">
+      <h2 class="section-title">Key Features</h2>
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let feature of features">
+          <div class="feature-icon">
+            <i [class]="'ph ph-' + feature.icon"></i>
+          </div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="tech-section">
+      <h2 class="section-title">Technology Stack</h2>
+      <div class="tech-grid">
+        <div class="tech-card" *ngFor="let tech of techStack">
+          <h3>{{ tech.category }}</h3>
+          <ul>
+            <li *ngFor="let item of tech.items">
+              <i class="ph ph-check-circle"></i>
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-section">
+      <h2 class="section-title">How It Works</h2>
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="step-number">1</div>
+          <h3>Upload or Input</h3>
+          <p>Upload your medical report or describe your symptoms in natural language</p>
+        </div>
+        <div class="how-card">
+          <div class="step-number">2</div>
+          <h3>AI Processing</h3>
+          <p>Our AI analyzes the data using advanced OCR, LLMs, and medical knowledge bases</p>
+        </div>
+        <div class="how-card">
+          <div class="step-number">3</div>
+          <h3>Clear Insights</h3>
+          <p>Receive easy-to-understand summaries with actionable recommendations</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <section class="disclaimer-section">
+      <div class="disclaimer-card">
+        <i class="ph ph-warning"></i>
+        <div class="disclaimer-content">
+          <h3>Important Disclaimer</h3>
+          <p>
+            MediSense AI is an informational tool designed to help you better understand medical 
+            information. It is <strong>not a substitute for professional medical advice, diagnosis, 
+            or treatment</strong>. Always seek the advice of your physician or other qualified health 
+            provider with any questions you may have regarding a medical condition.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
