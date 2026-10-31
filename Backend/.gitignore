@@ -65,3 +65,9 @@ Thumbs.db
 .coverage
 htmlcov/
 
+
+# Runtime user/report/chat databases; use synthetic fixtures in tests.
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
